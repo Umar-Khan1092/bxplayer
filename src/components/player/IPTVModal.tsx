@@ -69,7 +69,11 @@ export function IPTVModal({ isOpen, onClose }: IPTVModalProps) {
                     )}
                     <h3 className="font-semibold text-white group-hover:text-red-400 transition-colors">{playlist.name}</h3>
                   </div>
-                  {playlist.isLocked && <Key className="w-4 h-4 text-yellow-500" title="PIN Protected" />}
+                  {playlist.isLocked && (
+                    <span title="PIN Protected">
+                      <Key className="w-4 h-4 text-yellow-500" />
+                    </span>
+                  )}
                 </div>
                 <p className="text-xs text-gray-400 truncate mb-4">
                   {playlist.url || playlist.serverUrl}
