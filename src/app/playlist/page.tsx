@@ -464,7 +464,9 @@ export default function PlaylistPage() {
                               </td>
                               <td className="px-6 py-5 text-center">
                                 {playlist.isLocked ? (
-                                  <Key className="w-4 h-4 text-yellow-500 mx-auto" title="PIN Protected" />
+                                  <span title="PIN Protected" className="block mx-auto w-max">
+                                    <Key className="w-4 h-4 text-yellow-500" />
+                                  </span>
                                 ) : (
                                   <span className="text-gray-600">-</span>
                                 )}
