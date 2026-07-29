@@ -372,10 +372,18 @@ export default function Home() {
               </button>
               <div>
                 <p className="text-[10px] sm:text-xs text-gray-400 font-medium tracking-wide uppercase">Device Details</p>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="text-xs text-gray-200">Mac Address:</span>
-                  <div className="flex items-center bg-black/30 px-1.5 py-0.5 rounded min-w-[120px] h-[24px]">
-                    {isAuthLoaded ? <span className="text-xs font-mono font-bold text-white">{persistentMac}</span> : <Skeleton className="w-24 h-4 rounded" />}
+                <div className="flex flex-col gap-2 mt-2">
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="text-xs text-gray-200">Mac Address:</span>
+                    <div className="flex items-center bg-black/30 px-1.5 py-0.5 rounded h-[24px]">
+                      {isAuthLoaded ? <span className="text-xs font-mono font-bold text-white">{persistentMac}</span> : <Skeleton className="w-24 h-4 rounded" />}
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="text-xs text-gray-200">User ID:</span>
+                    <div className="flex items-center bg-black/30 px-1.5 py-0.5 rounded h-[24px]">
+                      {isAuthLoaded ? <span className="text-xs font-mono font-bold text-white">{persistentId}</span> : <Skeleton className="w-24 h-4 rounded" />}
+                    </div>
                   </div>
                 </div>
               </div>

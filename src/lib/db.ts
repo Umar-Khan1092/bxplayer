@@ -19,11 +19,13 @@ export interface PlaylistRecord {
   id: string;
   macAddress: string;
   name: string;
-  type: 'M3U' | 'XTREAM';
+  type: 'M3U' | 'XTREAM' | 'CODE';
   url?: string;
   serverUrl?: string;
   username?: string;
   password?: string;
+  epgUrl?: string;
+  code?: string;
   itemsCount: number;
   isLocked: boolean;
   pin?: string;
