@@ -1,0 +1,192 @@
+{
+  "media": [
+    {
+      "id": "V-1",
+      "title": "Deepfake Detection _ Detect Deepfakes Before They Spread",
+      "type": "MOVIE",
+      "posterUrl": "https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=800&q=80",
+      "videoUrl": "/videos/Deepfake%20Detection%20_%20Detect%20Deepfakes%20Before%20They%20Spread%20-%20Personal%20-%20Microsoft%E2%80%8B%20Edge%202025-05-20%2000-08-35.mp4",
+      "qualityBadge": "HD",
+      "duration": "Unknown",
+      "category": "Series",
+      "isFavorite": false
+    },
+    {
+      "id": "V-2",
+      "title": "Food Demand Forecast & Procurement System",
+      "type": "MOVIE",
+      "posterUrl": "https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=800&q=80",
+      "videoUrl": "/videos/Food%20Demand%20Forecast%20%26%20Procurement%20System%20-%20Personal%20-%20Microsoft%E2%80%8B%20Edge%202025-12-07%2011-07-29.mp4",
+      "qualityBadge": "HD",
+      "duration": "Unknown",
+      "category": "Movies",
+      "isFavorite": false
+    },
+    {
+      "id": "V-3",
+      "title": "Lamsa _ Premium Women's Unstitched Clothing",
+      "type": "MOVIE",
+      "posterUrl": "https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=800&q=80",
+      "videoUrl": "/videos/Lamsa%20_%20Premium%20Women's%20Unstitched%20Clothing%20-%20Google%20Chrome%202026-07-12%2000-23-16.mp4",
+      "qualityBadge": "HD",
+      "duration": "Unknown",
+      "category": "TV Dramas",
+      "isFavorite": false
+    },
+    {
+      "id": "V-4",
+      "title": "Lamsa _ Premium Women's Unstitched Clothing",
+      "type": "MOVIE",
+      "posterUrl": "https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=800&q=80",
+      "videoUrl": "/videos/Lamsa%20_%20Premium%20Women's%20Unstitched%20Clothing%20-%20Google%20Chrome%202026-07-12%2000-23-40.mp4",
+      "qualityBadge": "HD",
+      "duration": "Unknown",
+      "category": "TV Dramas",
+      "isFavorite": false
+    },
+    {
+      "id": "V-5",
+      "title": "Lamsa _ Premium Women's Unstitched Clothing",
+      "type": "MOVIE",
+      "posterUrl": "https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=800&q=80",
+      "videoUrl": "/videos/Lamsa%20_%20Premium%20Women's%20Unstitched%20Clothing%20-%20Google%20Chrome%202026-07-12%2000-37-42.mp4",
+      "qualityBadge": "HD",
+      "duration": "Unknown",
+      "category": "Movies",
+      "isFavorite": false
+    },
+    {
+      "id": "V-6",
+      "title": "Medical Tumor Grading Assistant",
+      "type": "MOVIE",
+      "posterUrl": "https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=800&q=80",
+      "videoUrl": "/videos/Medical%20Tumor%20Grading%20Assistant%20-%20Personal%20-%20Microsoft%E2%80%8B%20Edge%202025-04-12%2019-16-56.mp4",
+      "qualityBadge": "HD",
+      "duration": "Unknown",
+      "category": "Series",
+      "isFavorite": false
+    },
+    {
+      "id": "V-7",
+      "title": "Medicla diagnosis",
+      "type": "MOVIE",
+      "posterUrl": "https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=800&q=80",
+      "videoUrl": "/videos/Medicla%20diagnosis.mp4",
+      "qualityBadge": "HD",
+      "duration": "Unknown",
+      "category": "TV Dramas",
+      "isFavorite": false
+    },
+    {
+      "id": "V-8",
+      "title": "NETCC_Management",
+      "type": "MOVIE",
+      "posterUrl": "https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=800&q=80",
+      "videoUrl": "/videos/NETCC_Management.mp4",
+      "qualityBadge": "HD",
+      "duration": "Unknown",
+      "category": "TV Dramas",
+      "isFavorite": false
+    },
+    {
+      "id": "V-9",
+      "title": "rag-pipeline.gif 2026-03-09 05-06-38",
+      "type": "MOVIE",
+      "posterUrl": "https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=800&q=80",
+      "videoUrl": "/videos/rag-pipeline.gif%202026-03-09%2005-06-38.mp4",
+      "qualityBadge": "HD",
+      "duration": "Unknown",
+      "category": "Movies",
+      "isFavorite": false
+    },
+    {
+      "id": "V-10",
+      "title": "rag_deep and 4 more pages",
+      "type": "MOVIE",
+      "posterUrl": "https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=800&q=80",
+      "videoUrl": "/videos/rag_deep%20and%204%20more%20pages%20-%20Personal%20-%20Microsoft%E2%80%8B%20Edge%202025-04-06%2020-36-02.mp4",
+      "qualityBadge": "HD",
+      "duration": "Unknown",
+      "category": "Movies",
+      "isFavorite": false
+    },
+    {
+      "id": "V-11",
+      "title": "Sales Module - Business Management and 2 more pages",
+      "type": "MOVIE",
+      "posterUrl": "https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=800&q=80",
+      "videoUrl": "/videos/Sales%20Module%20-%20Business%20Management%20and%202%20more%20pages%20-%20Personal%20-%20Microsoft%E2%80%8B%20Edge%202026-01-31%2016-06-27.mp4",
+      "qualityBadge": "HD",
+      "duration": "Unknown",
+      "category": "TV Dramas",
+      "isFavorite": false
+    },
+    {
+      "id": "V-12",
+      "title": "Streamlit",
+      "type": "MOVIE",
+      "posterUrl": "https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=800&q=80",
+      "videoUrl": "/videos/Streamlit%20-%20Google%20Chrome%202025-03-26%2005-58-58.mp4",
+      "qualityBadge": "HD",
+      "duration": "Unknown",
+      "category": "TV Dramas",
+      "isFavorite": false
+    },
+    {
+      "id": "V-13",
+      "title": "streamlit_app_mutimodal",
+      "type": "MOVIE",
+      "posterUrl": "https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=800&q=80",
+      "videoUrl": "/videos/streamlit_app_mutimodal%20-%20Personal%20-%20Microsoft%E2%80%8B%20Edge%202025-04-03%2006-37-15.mp4",
+      "qualityBadge": "HD",
+      "duration": "Unknown",
+      "category": "Movies",
+      "isFavorite": false
+    },
+    {
+      "id": "V-14",
+      "title": "Textual Data Analysis",
+      "type": "MOVIE",
+      "posterUrl": "https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=800&q=80",
+      "videoUrl": "/videos/Textual%20Data%20Analysis.mp4",
+      "qualityBadge": "HD",
+      "duration": "Unknown",
+      "category": "Movies",
+      "isFavorite": false
+    },
+    {
+      "id": "V-15",
+      "title": "WhatsApp Recipe Bot and 1 more page",
+      "type": "MOVIE",
+      "posterUrl": "https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=800&q=80",
+      "videoUrl": "/videos/WhatsApp%20Recipe%20Bot%20and%201%20more%20page%20-%20Personal%20-%20Microsoft%E2%80%8B%20Edge%202025-04-06%2012-33-31.mp4",
+      "qualityBadge": "HD",
+      "duration": "Unknown",
+      "category": "Series",
+      "isFavorite": false
+    },
+    {
+      "id": "V-16",
+      "title": "World Population Dashboard",
+      "type": "MOVIE",
+      "posterUrl": "https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=800&q=80",
+      "videoUrl": "/videos/World%20Population%20Dashboard%20-%20Personal%20-%20Microsoft%E2%80%8B%20Edge%202025-04-03%2006-55-34.mp4",
+      "qualityBadge": "HD",
+      "duration": "Unknown",
+      "category": "Favourites",
+      "isFavorite": true
+    }
+  ],
+  "playlists": [
+    {
+      "name": "Good Playlist",
+      "macAddress": "F3:5C:20:21:2A:50",
+      "type": "M3U",
+      "isLocked": true,
+      "pin": "1122",
+      "url": "http://oswinhale.site/get.php?username=575777788&password=c13ceYyMk&type=m3u_plus&output=ts",
+      "id": "PL-1785268760121",
+      "itemsCount": 2000
+    }
+  ]
+}
