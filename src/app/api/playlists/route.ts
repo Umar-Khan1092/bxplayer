@@ -33,54 +33,9 @@ export async function POST(req: Request) {
 
     // Try to pre-fetch and calculate items count
     try {
-      if (newPlaylist.type === 'M3U' && newPlaylist.url) {
-        const res = await fetch(newPlaylist.url, {
-           headers: {
-             'User-Agent': 'VLC/3.0.16 LibVLC/3.0.16'
-           }
-        });
-        if (res.ok) {
-          const reader = res.body?.getReader();
-          if (reader) {
-            const decoder = new TextDecoder();
-            let chunk = '';
-            let count = 0;
-            let inExtinf = false;
-            try {
-              while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
-                chunk += decoder.decode(value, { stream: true });
-                const lines = chunk.replace(/\r/g, '').split('\n');
-                chunk = lines.pop() || '';
-                for (const line of lines) {
-                  const trimmed = line.trim();
-                  if (trimmed.startsWith('#EXTINF:')) {
-                    inExtinf = true;
-                  } else if (!trimmed.startsWith('#') && inExtinf) {
-                    count++;
-                    inExtinf = false;
-                    if (count >= 2000) {
-                      reader.cancel();
-                      break;
-                    }
-                  }
-                }
-                if (count >= 2000) break;
-              }
-            } catch (e) {
-              console.error("Stream count error", e);
-            }
-            newPlaylist.itemsCount = count;
-          } else {
-             const content = await res.text();
-             newPlaylist.itemsCount = parseM3U(content).length;
-          }
-        }
-      } else if (newPlaylist.type === 'XTREAM' && newPlaylist.serverUrl && newPlaylist.username && newPlaylist.password) {
-        const media = await fetchXtream(newPlaylist.serverUrl, newPlaylist.username, newPlaylist.password);
-        newPlaylist.itemsCount = media.length;
-      }
+      // NOTE: We no longer pre-fetch M3U or Xtream items here during saving.
+      // IPTV playlists can contain 100,000+ items and take 30s+ to download,
+      // which causes Vercel serverless function timeouts and UI freezing.
     } catch (fetchErr) {
       console.warn("Could not pre-fetch playlist items count", fetchErr);
     }

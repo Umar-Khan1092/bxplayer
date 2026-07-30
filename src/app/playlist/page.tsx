@@ -394,7 +394,7 @@ export default function PlaylistPage() {
               {activeFormTab === "LIST" ? (
                 <>
                   {/* Top Action Bar */}
-                  <div className="flex flex-wrap items-center justify-between gap-4 mb-10 bg-[#111111] p-4 rounded-2xl shadow-xl border border-white/5">
+                  <div className="flex flex-wrap items-center justify-between gap-4 mb-10 bg-[#111111] p-4 rounded-lg shadow-xl border border-white/5">
                     
                     {/* Search & MAC */}
                     <div className="flex items-center gap-4 flex-1 min-w-[300px]">
@@ -402,25 +402,23 @@ export default function PlaylistPage() {
                         <Input 
                           placeholder="Search" 
                           value={searchQuery}
-                          onChange={(e) => setSearchQuery(e.target.value)}
-                          className="w-full bg-[#050505] border border-white/10 rounded-xl h-12 pl-12 text-white focus:border-[#0F763F] focus:ring-1 focus:ring-[#0F763F] outline-none transition-all placeholder-gray-500"
+                          className="w-full bg-[#050505] border border-white/10 rounded-md h-12 pl-12 text-white focus:border-[#0F763F] focus:ring-1 focus:ring-[#0F763F] outline-none transition-all placeholder-gray-500"
                         />
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
                       </div>
-                      <div className="bg-[#050505] border border-white/10 text-[#0F763F] px-6 h-12 flex items-center justify-center rounded-xl font-mono text-sm tracking-[0.2em] font-bold min-w-[180px]">
+                      <div className="bg-[#050505] border border-white/10 text-[#0F763F] px-6 h-12 flex items-center justify-center rounded-md font-mono text-sm tracking-[0.2em] font-bold min-w-[180px]">
                         {persistentMac}
                       </div>
                     </div>
 
-                    {/* Add Buttons */}
                     <div className="flex items-center gap-2 flex-shrink-0 overflow-x-auto pb-1 sm:pb-0">
-                      <button onClick={() => { setActiveFormTab("M3U"); resetForm(); }} className="bg-[#0F763F] hover:bg-[#0c6133] text-white px-6 h-12 flex items-center justify-center rounded-xl text-sm font-bold tracking-wide transition-colors whitespace-nowrap shadow-sm cursor-pointer">
+                      <button onClick={() => { setActiveFormTab("M3U"); resetForm(); }} className="bg-[#0F763F] hover:bg-[#0c6133] text-white px-6 h-12 flex items-center justify-center rounded-md text-sm font-bold tracking-wide transition-colors whitespace-nowrap shadow-sm cursor-pointer">
                         Add Playlist
                       </button>
-                      <button onClick={() => { setActiveFormTab("XTREAM"); resetForm(); }} className="bg-[#0F763F] hover:bg-[#0c6133] text-white px-6 h-12 flex items-center justify-center rounded-xl text-sm font-bold tracking-wide transition-colors whitespace-nowrap shadow-sm cursor-pointer">
+                      <button onClick={() => { setActiveFormTab("XTREAM"); resetForm(); }} className="bg-[#0F763F] hover:bg-[#0c6133] text-white px-6 h-12 flex items-center justify-center rounded-md text-sm font-bold tracking-wide transition-colors whitespace-nowrap shadow-sm cursor-pointer">
                         Add XC Playlist
                       </button>
-                      <button onClick={() => { setActiveFormTab("CODE"); resetForm(); }} className="bg-[#0F763F] hover:bg-[#0c6133] text-white px-6 h-12 flex items-center justify-center rounded-xl text-sm font-bold tracking-wide transition-colors whitespace-nowrap shadow-sm cursor-pointer">
+                      <button onClick={() => { setActiveFormTab("CODE"); resetForm(); }} className="bg-[#0F763F] hover:bg-[#0c6133] text-white px-6 h-12 flex items-center justify-center rounded-md text-sm font-bold tracking-wide transition-colors whitespace-nowrap shadow-sm cursor-pointer">
                         Add Code Playlist
                       </button>
                     </div>
@@ -432,7 +430,7 @@ export default function PlaylistPage() {
                       <Loader2 className="w-8 h-8 animate-spin text-[#0F763F]" />
                     </div>
                   ) : filteredPlaylists.length > 0 ? (
-                    <div className="bg-[#111111] rounded-2xl shadow-xl border border-white/5 overflow-hidden">
+                    <div className="bg-[#111111] rounded-lg shadow-xl border border-white/5 overflow-hidden">
                       <table className="w-full text-left border-collapse">
                         <thead>
                           <tr className="bg-[#050505] border-b border-white/5">
@@ -495,17 +493,17 @@ export default function PlaylistPage() {
                       </table>
                     </div>
                   ) : (
-                    <div className="flex flex-col items-center justify-center py-32 text-center bg-[#111111] rounded-2xl border border-white/5 shadow-xl">
+                    <div className="flex flex-col items-center justify-center py-32 text-center bg-[#111111] rounded-lg border border-white/5 shadow-xl">
                        <p className="text-2xl font-bold text-gray-100 mb-3">No Playlists to show</p>
                        <p className="text-gray-500 text-sm max-w-sm">Add a new M3U or Xtream Codes playlist using the buttons above.</p>
                     </div>
                   )}
                 </>
               ) : activeFormTab === "M3U" || activeFormTab === "XTREAM" || activeFormTab === "CODE" ? (
-                <div className="bg-[#111111] rounded-3xl shadow-xl border border-white/5 overflow-hidden max-w-5xl animate-in slide-in-from-bottom-4 duration-300">
+                <div className="bg-[#111111] rounded-lg shadow-xl border border-white/5 overflow-hidden max-w-5xl animate-in slide-in-from-bottom-4 duration-300">
                   <div className="p-8 sm:p-12 relative group">
                     {/* Breadcrumb Header */}
-                    <div className="flex items-center gap-4 bg-[#050505] p-4 rounded-xl border border-white/5 mb-10 shadow-lg relative z-10">
+                    <div className="flex items-center gap-4 bg-[#050505] p-4 rounded-md border border-white/5 mb-10 shadow-lg relative z-10">
                       <button onClick={() => setActiveFormTab("LIST")} className="p-2 hover:bg-white/10 rounded-full transition-colors cursor-pointer">
                         <ArrowLeft className="w-5 h-5 text-gray-300" />
                       </button>
@@ -533,7 +531,7 @@ export default function PlaylistPage() {
                           <label className="block text-gray-400 text-sm font-bold tracking-wider mb-3">Playlist Name</label>
                           <input 
                             placeholder="e.g., Family Movies" 
-                            className="w-full bg-[#050505] border border-white/10 rounded-xl h-14 px-5 text-white focus:border-[#0F763F] focus:ring-1 focus:ring-[#0F763F] outline-none transition-all font-medium placeholder-gray-600" 
+                            className="w-full bg-[#050505] border border-white/10 rounded-md h-14 px-5 text-white focus:border-[#0F763F] focus:ring-1 focus:ring-[#0F763F] outline-none transition-all font-medium placeholder-gray-600" 
                             value={playlistName}
                             onChange={e => setPlaylistName(e.target.value)}
                             required
@@ -546,7 +544,7 @@ export default function PlaylistPage() {
                             <input 
                               placeholder="http://example.com/playlist.m3u" 
                               type="url" 
-                              className="w-full bg-[#050505] border border-white/10 rounded-xl h-14 px-5 text-white focus:border-[#0F763F] focus:ring-1 focus:ring-[#0F763F] outline-none transition-all font-medium placeholder-gray-600" 
+                              className="w-full bg-[#050505] border border-white/10 rounded-md h-14 px-5 text-white focus:border-[#0F763F] focus:ring-1 focus:ring-[#0F763F] outline-none transition-all font-medium placeholder-gray-600" 
                               value={m3uUrl}
                               onChange={e => setM3uUrl(e.target.value)}
                               required
@@ -559,7 +557,7 @@ export default function PlaylistPage() {
                             <label className="block text-gray-400 text-sm font-bold tracking-wider mb-3">Playlist Code</label>
                             <input 
                               placeholder="Enter Code" 
-                              className="w-full bg-[#050505] border border-white/10 rounded-xl h-14 px-5 text-white focus:border-[#0F763F] focus:ring-1 focus:ring-[#0F763F] outline-none transition-all font-medium placeholder-gray-600" 
+                              className="w-full bg-[#050505] border border-white/10 rounded-md h-14 px-5 text-white focus:border-[#0F763F] focus:ring-1 focus:ring-[#0F763F] outline-none transition-all font-medium placeholder-gray-600" 
                               value={playlistCode}
                               onChange={e => setPlaylistCode(e.target.value)}
                               required
@@ -573,7 +571,7 @@ export default function PlaylistPage() {
                               <label className="block text-gray-400 text-sm font-bold tracking-wider mb-3">User Name</label>
                               <input 
                                 placeholder="Username" 
-                                className="w-full bg-[#050505] border border-white/10 rounded-xl h-14 px-5 text-white focus:border-[#0F763F] focus:ring-1 focus:ring-[#0F763F] outline-none transition-all font-medium placeholder-gray-600" 
+                                className="w-full bg-[#050505] border border-white/10 rounded-md h-14 px-5 text-white focus:border-[#0F763F] focus:ring-1 focus:ring-[#0F763F] outline-none transition-all font-medium placeholder-gray-600" 
                                 value={xtreamUser}
                                 onChange={e => setXtreamUser(e.target.value)}
                                 required
@@ -584,7 +582,7 @@ export default function PlaylistPage() {
                               <input 
                                 placeholder="Password" 
                                 type="password" 
-                                className="w-full bg-[#050505] border border-white/10 rounded-xl h-14 px-5 text-white focus:border-[#0F763F] focus:ring-1 focus:ring-[#0F763F] outline-none transition-all font-medium placeholder-gray-600" 
+                                className="w-full bg-[#050505] border border-white/10 rounded-md h-14 px-5 text-white focus:border-[#0F763F] focus:ring-1 focus:ring-[#0F763F] outline-none transition-all font-medium placeholder-gray-600" 
                                 value={xtreamPass}
                                 onChange={e => setXtreamPass(e.target.value)}
                                 required
@@ -595,7 +593,7 @@ export default function PlaylistPage() {
                               <input 
                                 placeholder="http://example.com:8080" 
                                 type="url" 
-                                className="w-full bg-[#050505] border border-white/10 rounded-xl h-14 px-5 text-white focus:border-[#0F763F] focus:ring-1 focus:ring-[#0F763F] outline-none transition-all font-medium placeholder-gray-600"
+                                className="w-full bg-[#050505] border border-white/10 rounded-md h-14 px-5 text-white focus:border-[#0F763F] focus:ring-1 focus:ring-[#0F763F] outline-none transition-all font-medium placeholder-gray-600"
                                 value={xtreamServer}
                                 onChange={e => setXtreamServer(e.target.value)}
                                 required
@@ -606,7 +604,7 @@ export default function PlaylistPage() {
                               <input 
                                 placeholder="http://example.com/epg.xml" 
                                 type="url" 
-                                className="w-full bg-[#050505] border border-white/10 rounded-xl h-14 px-5 text-white focus:border-[#0F763F] focus:ring-1 focus:ring-[#0F763F] outline-none transition-all font-medium placeholder-gray-600"
+                                className="w-full bg-[#050505] border border-white/10 rounded-md h-14 px-5 text-white focus:border-[#0F763F] focus:ring-1 focus:ring-[#0F763F] outline-none transition-all font-medium placeholder-gray-600"
                                 value={xtreamEpg}
                                 onChange={e => setXtreamEpg(e.target.value)}
                               />
@@ -639,7 +637,7 @@ export default function PlaylistPage() {
                                   <input 
                                   placeholder="Enter PIN" 
                                   type="password" 
-                                  className="w-full bg-[#050505] border border-white/10 rounded-xl h-14 px-5 text-white focus:border-[#0F763F] focus:ring-1 focus:ring-[#0F763F] outline-none transition-all font-medium placeholder-gray-600 text-left" 
+                                  className="w-full bg-[#050505] border border-white/10 rounded-md h-14 px-5 text-white focus:border-[#0F763F] focus:ring-1 focus:ring-[#0F763F] outline-none transition-all font-medium placeholder-gray-600 text-left" 
                                   value={pin}
                                   onChange={e => setPin(e.target.value)}
                                   required
@@ -650,7 +648,7 @@ export default function PlaylistPage() {
                                   <input 
                                   placeholder="Confirm PIN" 
                                   type="password" 
-                                  className="w-full bg-[#050505] border border-white/10 rounded-xl h-14 px-5 text-white focus:border-[#0F763F] focus:ring-1 focus:ring-[#0F763F] outline-none transition-all font-medium placeholder-gray-600 text-left" 
+                                  className="w-full bg-[#050505] border border-white/10 rounded-md h-14 px-5 text-white focus:border-[#0F763F] focus:ring-1 focus:ring-[#0F763F] outline-none transition-all font-medium placeholder-gray-600 text-left" 
                                   value={confirmPin}
                                   onChange={e => setConfirmPin(e.target.value)}
                                   required
@@ -667,7 +665,7 @@ export default function PlaylistPage() {
                       )}
 
                       <div className="flex justify-end pt-6">
-                        <button disabled={isSubmitting} type="submit" className="bg-[#0F763F] hover:bg-[#0c6133] text-white px-12 h-14 rounded-xl font-bold tracking-widest cursor-pointer transition-transform hover:scale-105 active:scale-95 shadow-lg flex items-center">
+                        <button disabled={isSubmitting} type="submit" className="bg-[#0F763F] hover:bg-[#0c6133] text-white px-12 h-14 rounded-md font-bold tracking-widest cursor-pointer transition-transform hover:scale-105 active:scale-95 shadow-lg flex items-center">
                           {isSubmitting ? <Loader2 className="w-5 h-5 mr-3 animate-spin"/> : <Save className="w-5 h-5 mr-3"/>} {editingId ? "UPDATE" : "SAVE"}
                         </button>
                       </div>
@@ -680,14 +678,14 @@ export default function PlaylistPage() {
 
           {sidebarTab === "ACTIVATE_DEVICE" && (
             <div className="max-w-4xl animate-in slide-in-from-bottom-4 duration-300">
-              <div className="bg-[#111111] rounded-3xl shadow-xl border border-white/5 overflow-hidden p-8 sm:p-12 relative group">
+              <div className="bg-[#111111] rounded-lg shadow-xl border border-white/5 overflow-hidden p-8 sm:p-12 relative group">
                  {/* Ambient Background Glow */}
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-full bg-[#0F763F]/5 blur-[100px] rounded-full pointer-events-none group-hover:bg-[#0F763F]/10 transition-all duration-1000"></div>
     
                 <div className="relative z-10">
                     <h3 className="text-2xl font-bold text-gray-100 mb-8">Activate on Our Store:</h3>
                     
-                    <div className="w-72 h-44 bg-black/50 rounded-2xl mb-14 flex items-center justify-center shadow-2xl border border-white/10 relative overflow-hidden group/card cursor-pointer transition-transform hover:scale-105 backdrop-blur-sm">
+                    <div className="w-72 h-44 bg-black/50 rounded-lg mb-14 flex items-center justify-center shadow-2xl border border-white/10 relative overflow-hidden group/card cursor-pointer transition-transform hover:scale-105 backdrop-blur-sm">
                       <div className="absolute inset-0 bg-gradient-to-br from-[#0F763F]/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity"></div>
                       <div className="relative z-10 flex items-center justify-center">
                         <div className="text-5xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-green-500 to-green-300 mr-3 drop-shadow-lg">
@@ -703,7 +701,7 @@ export default function PlaylistPage() {
                       <span className="text-[#0F763F] font-bold text-base">NOTE:</span> BX Player does not provide contents and it is pure media player. To use BX Player, you have to upload your own playlist. If you have not playlist, then you can't use BX Player anymore so in this case do not pay. Also we are not allowing activation for the users that don't have a playlist.
                     </p>
     
-                    <button disabled className="bg-[#0F763F] text-white font-bold text-sm px-14 py-4 rounded-xl tracking-widest transition-all shadow-lg opacity-50 cursor-not-allowed">
+                    <button disabled className="bg-[#0F763F] text-white font-bold text-sm px-14 py-4 rounded-md tracking-widest transition-all shadow-lg opacity-50 cursor-not-allowed">
                       PAY
                     </button>
                 </div>
@@ -713,7 +711,7 @@ export default function PlaylistPage() {
 
           {sidebarTab === "DEVICE_KEY" && (
             <div className="max-w-4xl animate-in slide-in-from-bottom-4 duration-300">
-              <div className="bg-white rounded shadow-sm border border-gray-200 overflow-hidden">
+              <div className="bg-white rounded-md shadow-sm border border-gray-200 overflow-hidden">
                 <form onSubmit={handleDeviceKeySubmit} className="p-6 sm:p-10">
                   <h2 className="text-[22px] font-bold text-gray-900 mb-10">Reset Device Key</h2>
                   
@@ -749,7 +747,7 @@ export default function PlaylistPage() {
 
           {sidebarTab === "PARENT_PIN" && (
             <div className="max-w-4xl animate-in slide-in-from-bottom-4 duration-300">
-              <div className="bg-white rounded shadow-sm border border-gray-200 overflow-hidden">
+              <div className="bg-white rounded-md shadow-sm border border-gray-200 overflow-hidden">
                 <form onSubmit={handleParentPinSubmit} className="p-6 sm:p-10">
                   <h2 className="text-[22px] font-bold text-gray-900 mb-10">Parent Pin</h2>
                   
@@ -785,7 +783,7 @@ export default function PlaylistPage() {
 
           {sidebarTab === "SWITCH_MAC" && (
             <div className="max-w-4xl animate-in slide-in-from-bottom-4 duration-300">
-              <div className="bg-white rounded shadow-sm border border-gray-200 overflow-hidden">
+              <div className="bg-white rounded-md shadow-sm border border-gray-200 overflow-hidden">
                 <form onSubmit={handleSwitchMacSubmit} className="p-6 sm:p-10">
                   <h2 className="text-[22px] font-bold text-gray-900 mb-10">Transfer your activation and playlists to another device MAC Address</h2>
                   

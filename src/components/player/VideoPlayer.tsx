@@ -33,6 +33,29 @@ export function VideoPlayer({ src, poster, title, isFavorite, onFavoriteToggle, 
   const [hoverPos, setHoverPos] = useState(0);
   const [isHoveringProgress, setIsHoveringProgress] = useState(false);
 
+  const [showControls, setShowControls] = useState(true);
+  const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleInteraction = () => {
+    setShowControls(true);
+    if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
+    controlsTimeoutRef.current = setTimeout(() => {
+      setShowControls(false);
+    }, 3000);
+  };
+
+  useEffect(() => {
+    if (isPlaying) {
+      handleInteraction();
+    } else {
+      setShowControls(true);
+      if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
+    }
+    return () => {
+      if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
+    };
+  }, [isPlaying]);
+
   const formatTime = (timeInSeconds: number) => {
     if (isNaN(timeInSeconds)) return "0:00";
     if (!isFinite(timeInSeconds)) return "Live";
@@ -269,14 +292,46 @@ export function VideoPlayer({ src, poster, title, isFavorite, onFavoriteToggle, 
     }
   };
 
-  const toggleFullscreen = (e: React.MouseEvent) => {
+  const toggleFullscreen = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    const container = videoRef.current?.parentElement;
+    const container = videoRef.current?.parentElement as any;
+    const video = videoRef.current as any;
+    
     if (container) {
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
+      if (document.fullscreenElement || (document as any).webkitFullscreenElement) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if ((document as any).webkitExitFullscreen) {
+          (document as any).webkitExitFullscreen();
+        }
+        
+        // Attempt to unlock screen orientation
+        try {
+          const orientation = screen.orientation as any;
+          if (orientation && orientation.unlock) {
+            orientation.unlock();
+          }
+        } catch (err) {
+          console.warn("Screen orientation unlock failed", err);
+        }
       } else {
-        container.requestFullscreen();
+        try {
+          if (container.requestFullscreen) {
+            await container.requestFullscreen();
+          } else if (container.webkitRequestFullscreen) {
+            await container.webkitRequestFullscreen();
+          } else if (video && video.webkitEnterFullscreen) {
+            video.webkitEnterFullscreen();
+          }
+          
+          // Attempt to lock screen orientation to landscape
+          const orientation = screen.orientation as any;
+          if (orientation && orientation.lock) {
+            await orientation.lock('landscape');
+          }
+        } catch (err) {
+          console.warn("Fullscreen or orientation lock failed", err);
+        }
       }
     }
   };
@@ -306,7 +361,12 @@ export function VideoPlayer({ src, poster, title, isFavorite, onFavoriteToggle, 
   };
 
   return (
-    <div className="relative group w-full rounded-xl sm:rounded-2xl overflow-hidden bg-black border border-[rgba(255,255,255,0.1)]">
+    <div 
+      className="relative group w-full rounded-xl sm:rounded-2xl overflow-hidden bg-black border border-[rgba(255,255,255,0.1)]"
+      onMouseMove={handleInteraction}
+      onTouchStart={handleInteraction}
+      onMouseLeave={() => isPlaying && setShowControls(false)}
+    >
       <video
         ref={videoRef}
         poster={poster}
@@ -332,7 +392,10 @@ export function VideoPlayer({ src, poster, title, isFavorite, onFavoriteToggle, 
       )}
 
       {/* Top Overlay */}
-      <div className="absolute top-0 left-0 right-0 p-4 sm:p-6 bg-gradient-to-b from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex justify-between items-start">
+      <div className={cn(
+        "absolute top-0 left-0 right-0 p-4 sm:p-6 bg-gradient-to-b from-black/80 to-transparent transition-opacity duration-300 pointer-events-none flex justify-between items-start",
+        showControls ? "opacity-100" : "opacity-0"
+      )}>
         <h2 className="text-white text-base sm:text-xl font-bold drop-shadow-md max-w-[80%] line-clamp-2">{title}</h2>
         {onFavoriteToggle && (
           <button 
@@ -345,7 +408,10 @@ export function VideoPlayer({ src, poster, title, isFavorite, onFavoriteToggle, 
       </div>
 
       {/* Controls Overlay */}
-      <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5 bg-gradient-to-t from-black/95 via-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <div className={cn(
+        "absolute bottom-0 left-0 right-0 p-3 sm:p-5 bg-gradient-to-t from-black/95 via-black/70 to-transparent transition-opacity duration-300",
+        showControls ? "opacity-100" : "opacity-0"
+      )}>
         
         {/* Custom Progress Bar */}
         {durationStr !== "Live" && (
