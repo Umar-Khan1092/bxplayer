@@ -9,7 +9,7 @@ export interface MediaRecord {
   type: string;
   posterUrl: string;
   videoUrl: string;
-  qualityBadge: string;
+  qualityBadge?: string;
   duration?: string;
   category: string;
   isFavorite: boolean;

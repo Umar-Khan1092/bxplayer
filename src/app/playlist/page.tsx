@@ -117,7 +117,7 @@ export default function PlaylistPage() {
 
     resetForm();
     setEditingId(playlist.id);
-    setActiveFormTab(playlist.type as "M3U" | "XTREAM");
+    setActiveFormTab(playlist.type as "M3U" | "XTREAM" | "CODE");
     setPlaylistName(playlist.name);
     
     if (playlist.type === 'M3U') {
