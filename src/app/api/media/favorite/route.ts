@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { readDB, writeDB } from '@/lib/db';
+import { getMedia, saveMedia } from '@/lib/db';
 
 export async function POST(req: Request) {
   try {
@@ -10,22 +10,21 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Video ID is required' }, { status: 400 });
     }
 
-    const db = readDB();
-    const videoIndex = db.media.findIndex(v => v.id === id);
+    const media = await getMedia();
+    const videoIndex = media.findIndex((v) => v.id === id);
 
     if (videoIndex === -1) {
       return NextResponse.json({ error: 'Video not found' }, { status: 404 });
     }
 
-    // Toggle favorite status
-    const isFavorite = !db.media[videoIndex].isFavorite;
-    db.media[videoIndex].isFavorite = isFavorite;
+    const isFavorite = !media[videoIndex].isFavorite;
+    media[videoIndex].isFavorite = isFavorite;
 
-    // Save DB
-    writeDB(db);
+    await saveMedia(media);
 
     return NextResponse.json({ success: true, isFavorite, id });
   } catch (error) {
+    console.error('Favorite toggle error:', error);
     return NextResponse.json({ error: 'Failed to update favorite status' }, { status: 500 });
   }
 }
