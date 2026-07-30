@@ -44,7 +44,7 @@ export function readDB(): DatabaseSchema {
   } catch (error) {
     console.error('Failed to read db.json:', error);
     // Return empty schema fallback
-    return { media: [] };
+    return { media: [], playlists: [] };
   }
 }
 
