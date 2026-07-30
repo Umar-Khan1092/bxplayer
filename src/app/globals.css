@@ -48,3 +48,10 @@ body {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* TV Responsiveness: Always show video player controls on devices with no pointer (Smart TVs, etc.) */
+@media (pointer: none), (pointer: coarse) {
+  .bxp-player .bxp-controls {
+    opacity: 1 !important;
+  }
+}

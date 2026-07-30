@@ -48,9 +48,8 @@ export async function GET(request: Request) {
           }
         }
         
-        // Return proxied URL
-        const requestBase = new URL(request.url).origin;
-        return `${requestBase}/api/proxy?url=${encodeURIComponent(chunkUrl)}`;
+        // Return absolute URL directly to bypass Vercel bandwidth limits
+        return chunkUrl;
       });
 
       return new NextResponse(rewrittenLines.join('\n'), {
