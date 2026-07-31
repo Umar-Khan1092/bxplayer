@@ -45,7 +45,8 @@ export default function Home() {
 
   const fetchMedia = async () => {
     try {
-      const res = await fetch('/api/media');
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+      const res = await fetch(`${baseUrl}/api/media`);
       const data = await res.json();
       setMediaList(data);
       if (data.length > 0) {
@@ -62,7 +63,8 @@ export default function Home() {
     if (!persistentMac) return;
     setIsPlaylistsLoading(true);
     try {
-      const res = await fetch(`/api/playlists?macAddress=${persistentMac}`);
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+      const res = await fetch(`${baseUrl}/api/playlists?macAddress=${persistentMac}`);
       const data = await res.json();
       setCustomPlaylists(data);
     } catch (error) {
@@ -81,7 +83,8 @@ export default function Home() {
     setActiveTab("Home"); // Switch immediately to show the loading skeleton
     window.scrollTo(0, 0); // Scroll to top to ensure skeleton is visible
     try {
-      const res = await fetch(`/api/media?playlistId=${playlist.id}`);
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+      const res = await fetch(`${baseUrl}/api/media?playlistId=${playlist.id}`);
       if (res.ok) {
         const data = await res.json();
         setMediaList(data);
@@ -115,7 +118,8 @@ export default function Home() {
     setActiveVideo({ ...activeVideo, isFavorite: newState });
     setMediaList(prevList => prevList.map(m => m.id === activeVideo.id ? { ...m, isFavorite: newState } : m));
     try {
-      await fetch('/api/media/favorite', {
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+      await fetch(`${baseUrl}/api/media/favorite`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: activeVideo.id })
@@ -136,7 +140,8 @@ export default function Home() {
       setActiveVideo({ ...activeVideo, isFavorite: newState });
     }
     try {
-      await fetch('/api/media/favorite', {
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+      await fetch(`${baseUrl}/api/media/favorite`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: media.id })

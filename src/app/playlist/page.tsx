@@ -54,7 +54,8 @@ export default function PlaylistPage() {
   const fetchPlaylists = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch(`/api/playlists?macAddress=${persistentMac}`);
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+      const res = await fetch(`${baseUrl}/api/playlists?macAddress=${persistentMac}`);
       if (res.ok) {
         const data = await res.json();
         setPlaylists(data);
@@ -152,7 +153,8 @@ export default function PlaylistPage() {
 
     if (!confirm("Are you sure you want to delete this playlist?")) return;
     try {
-      const res = await fetch(`/api/playlists?id=${id}&macAddress=${persistentMac}`, {
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+      const res = await fetch(`${baseUrl}/api/playlists?id=${id}&macAddress=${persistentMac}`, {
         method: 'DELETE'
       });
       if (res.ok) {
@@ -200,8 +202,9 @@ export default function PlaylistPage() {
     }
 
     try {
-      const url = '/api/playlists';
       const method = editingId ? 'PUT' : 'POST';
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+      const url = `${baseUrl}/api/playlists`;
       const body = editingId ? { ...playlistData, id: editingId } : playlistData;
 
       const res = await fetch(url, {

@@ -1,15 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  allowedDevOrigins: ["192.168.100.173"],
-  async redirects() {
-    return [
-      {
-        source: '/dashboard',
-        destination: '/',
-        permanent: false,
-      },
-    ];
+  output: process.env.CAPACITOR_BUILD === 'true' ? 'export' : undefined,
+  images: {
+    unoptimized: process.env.CAPACITOR_BUILD === 'true' ? true : undefined,
   },
 };
 

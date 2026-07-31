@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { Play, Pause, Maximize, Volume2, VolumeX, RotateCcw, RotateCw, Heart, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Hls from 'hls.js';
+import { Capacitor } from '@capacitor/core';
 
 interface VideoPlayerProps {
   src: string;
@@ -162,7 +163,11 @@ export function VideoPlayer({ src, poster, title, isFavorite, onFavoriteToggle, 
     // For MPEG-TS live streams we must proxy (CORS blocked by IPTV providers).
     // For HLS, the proxy rewrites the .m3u8 manifest to use direct chunk URLs,
     // so chunks are fetched browser→IPTV server directly (no proxy overhead).
-    const proxyUrl = isExternal ? `/api/proxy?url=${encodeURIComponent(src)}` : src;
+    // If running natively (Capacitor), bypass proxy since native ignores CORS.
+    // Otherwise, route through our Vercel API proxy for web.
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+    const isNative = typeof window !== 'undefined' && Capacitor.isNativePlatform();
+    const proxyUrl = isNative ? src : (isExternal ? `${baseUrl}/api/proxy?url=${encodeURIComponent(src)}` : src);
 
     if (isMpegTs) {
       // ── MPEG-TS live stream via mpegts.js ──────────────────────────────

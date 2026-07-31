@@ -18,7 +18,8 @@ export function IPTVModal({ isOpen, onClose }: IPTVModalProps) {
       const fetchPlaylists = async () => {
         setIsLoading(true);
         try {
-          const res = await fetch(`/api/playlists?macAddress=${macAddress}`);
+          const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+          const res = await fetch(`${baseUrl}/api/playlists?macAddress=${macAddress}`);
           if (res.ok) {
             const data = await res.json();
             setPlaylists(data);
