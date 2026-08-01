@@ -351,6 +351,11 @@ export default function Home() {
                          <div className="p-2 sm:p-3 flex flex-col justify-center">
                            <h4 className="font-semibold text-xs sm:text-sm text-white line-clamp-1 group-hover:text-purple-400 transition-colors">{playlist.name}</h4>
                            <span className="text-[10px] sm:text-xs text-gray-400 mt-0.5">{playlist.type} • {playlist.itemsCount || 0}</span>
+                           {playlist.expiryDate && (
+                             <span className="text-[9px] sm:text-[10px] text-red-400 font-bold mt-1 uppercase tracking-wider">
+                               Expires: {playlist.expiryDate.split('-').reverse().join('/')}
+                             </span>
+                           )}
                          </div>
                        </div>
                      </Card>

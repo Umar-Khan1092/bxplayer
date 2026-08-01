@@ -47,6 +47,7 @@ export default function PlaylistPage() {
   const [formError, setFormError] = useState("");
   const [xtreamEpg, setXtreamEpg] = useState("");
   const [playlistCode, setPlaylistCode] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
 
   // New Tab States
   const [deviceKeyInput, setDeviceKeyInput] = useState("");
@@ -127,6 +128,7 @@ export default function PlaylistPage() {
     setEditingId(null);
     setXtreamEpg("");
     setPlaylistCode("");
+    setExpiryDate("");
   };
 
   const handleEdit = (playlist: PlaylistRecord) => {
@@ -142,6 +144,7 @@ export default function PlaylistPage() {
     setEditingId(playlist.id);
     setActiveFormTab(playlist.type as "M3U" | "XTREAM" | "CODE");
     setPlaylistName(playlist.name);
+    setExpiryDate(playlist.expiryDate || "");
     
     if (playlist.type === 'M3U') {
       setM3uUrl(playlist.url || "");
@@ -209,7 +212,8 @@ export default function PlaylistPage() {
       macAddress: activeMac || persistentMac,
       type: activeFormTab === "M3U" ? "M3U" : activeFormTab === "XTREAM" ? "XTREAM" : "CODE",
       isLocked: isProtected,
-      pin: isProtected ? pin : undefined
+      pin: isProtected ? pin : undefined,
+      expiryDate: expiryDate ? expiryDate : undefined
     };
 
     if (activeFormTab === 'M3U') {
@@ -636,6 +640,18 @@ export default function PlaylistPage() {
                             </div>
                           </>
                         )}
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                        <div>
+                          <label className="block text-gray-400 text-sm font-bold tracking-wider mb-3">Expiry Date (Optional)</label>
+                          <input 
+                            type="date"
+                            className="w-full bg-[#050505] border border-white/10 rounded-md h-14 px-5 text-white focus:border-[#0F763F] focus:ring-1 focus:ring-[#0F763F] outline-none transition-all font-medium placeholder-gray-600" 
+                            value={expiryDate}
+                            onChange={e => setExpiryDate(e.target.value)}
+                          />
+                        </div>
                       </div>
 
                       <div className="border-t border-white/10 pt-8 mt-4">

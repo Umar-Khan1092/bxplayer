@@ -28,6 +28,7 @@ export interface PlaylistRecord {
   itemsCount: number;
   isLocked: boolean;
   pin?: string;
+  expiryDate?: string;
 }
 
 export interface DatabaseSchema {
