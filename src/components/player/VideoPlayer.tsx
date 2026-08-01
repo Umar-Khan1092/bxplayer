@@ -165,7 +165,7 @@ export function VideoPlayer({ src, poster, title, isFavorite, onFavoriteToggle, 
     // so chunks are fetched browser→IPTV server directly (no proxy overhead).
     // If running natively (Capacitor), bypass proxy since native ignores CORS.
     // Otherwise, route through our Vercel API proxy for web.
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://bxplayer.vercel.app';
     const isNative = typeof window !== 'undefined' && Capacitor.isNativePlatform();
     const proxyUrl = isNative ? src : (isExternal ? `${baseUrl}/api/proxy?url=${encodeURIComponent(src)}` : src);
 
