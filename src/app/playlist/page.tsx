@@ -54,7 +54,7 @@ export default function PlaylistPage() {
   const fetchPlaylists = async () => {
     setIsLoading(true);
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://bxplayer.vercel.app';
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
       const res = await fetch(`${baseUrl}/api/playlists?macAddress=${persistentMac}`);
       if (res.ok) {
         const data = await res.json();
@@ -155,7 +155,7 @@ export default function PlaylistPage() {
 
     if (!confirm("Are you sure you want to delete this playlist?")) return;
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://bxplayer.vercel.app';
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
       const res = await fetch(`${baseUrl}/api/playlists?id=${id}&macAddress=${persistentMac}`, {
         method: 'DELETE'
       });
@@ -205,7 +205,7 @@ export default function PlaylistPage() {
 
     try {
       const method = editingId ? 'PUT' : 'POST';
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://bxplayer.vercel.app';
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
       const url = `${baseUrl}/api/playlists`;
       const body = editingId ? { ...playlistData, id: editingId } : playlistData;
 

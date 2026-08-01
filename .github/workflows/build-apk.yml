@@ -11,6 +11,9 @@ jobs:
     name: Build APK
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -28,6 +31,8 @@ jobs:
         run: mv src/app/api src/app/_api_temp
 
       - name: Build Next.js Static Export
+        env:
+          NEXT_PUBLIC_API_URL: https://bxplayer.vercel.app
         run: npm run build:cap
 
       - name: Prevent APK inception (Remove APK from assets before sync)
@@ -51,8 +56,17 @@ jobs:
           chmod +x ./gradlew
           ./gradlew assembleDebug
 
+      - name: Auto-update APK in public folder
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk public/app-release.apk
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add public/app-release.apk
+          git commit -m "chore: Auto-update APK from latest build [skip ci]" || echo "No changes to commit"
+          git push
+
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: BXPlayer-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: public/app-release.apk

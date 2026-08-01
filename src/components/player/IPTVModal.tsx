@@ -18,7 +18,7 @@ export function IPTVModal({ isOpen, onClose }: IPTVModalProps) {
       const fetchPlaylists = async () => {
         setIsLoading(true);
         try {
-          const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://bxplayer.vercel.app';
+          const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
           const res = await fetch(`${baseUrl}/api/playlists?macAddress=${macAddress}`);
           if (res.ok) {
             const data = await res.json();
