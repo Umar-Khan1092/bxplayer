@@ -1,24 +1,25 @@
 "use client";
 
 import { useEffect } from "react";
-// @ts-ignore
-import SpatialNavigation from "spatial-navigation-js";
 
 export function SpatialNavigationInit() {
   useEffect(() => {
+    let SpatialNavigation: any;
+
     if (typeof window !== "undefined") {
-      SpatialNavigation.init();
-      SpatialNavigation.add({
-        selector: 'a, button, input, [tabindex]',
+      // @ts-ignore
+      import("spatial-navigation-js").then((mod) => {
+        SpatialNavigation = mod.default || mod;
+        SpatialNavigation.init();
+        SpatialNavigation.add({
+          selector: 'a, button, input, [tabindex]',
+        });
+        SpatialNavigation.makeFocusable();
       });
-      SpatialNavigation.makeFocusable();
-      
-      // Optionally focus the first focusable element
-      // SpatialNavigation.focus();
     }
 
     return () => {
-      if (typeof window !== "undefined") {
+      if (typeof window !== "undefined" && SpatialNavigation) {
         SpatialNavigation.uninit();
       }
     };
