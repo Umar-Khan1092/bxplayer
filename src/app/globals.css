@@ -45,6 +45,23 @@ body {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+/* TV Remote / Spatial Navigation Focus Styles */
+:focus {
+  outline: 4px solid #10b981; /* Emerald-500 glow */
+  outline-offset: 4px;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+  border-radius: 8px;
+  z-index: 50;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Don't show heavy outline for mouse users, only keyboard/remote users */
+:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Device } from '@capacitor/device';
+import { Capacitor } from '@capacitor/core';
 
 interface AuthState {
   macAddress: string;
@@ -31,23 +33,51 @@ export function useAuth() {
   });
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      let storedMac = localStorage.getItem("bx_mac_address");
-      let storedUserId = localStorage.getItem("bx_user_id");
+    const initAuth = async () => {
+      if (typeof window !== "undefined") {
+        if (Capacitor.isNativePlatform()) {
+          // Use Capacitor Device ID to persist across uninstalls
+          const deviceId = await Device.getId();
+          const uuid = deviceId.identifier.replace(/-/g, '').toUpperCase();
+          
+          let mac = "";
+          for (let i = 0; i < 12; i += 2) {
+            mac += uuid.substring(i, i + 2);
+            if (i < 10) mac += ":";
+          }
+          
+          // Generate an 8 digit consistent number from the UUID
+          let numStr = "";
+          for(let i = 0; i < uuid.length; i++) {
+             numStr += uuid.charCodeAt(i).toString();
+          }
+          const userId = numStr.substring(0, 8);
+          
+          setAuthState({
+            macAddress: mac,
+            userId: userId,
+            isLoaded: true,
+          });
+        } else {
+          let storedMac = localStorage.getItem("bx_mac_address");
+          let storedUserId = localStorage.getItem("bx_user_id");
 
-      if (!storedMac || !storedUserId) {
-        storedMac = generateMacAddress();
-        storedUserId = generateUserId();
-        localStorage.setItem("bx_mac_address", storedMac);
-        localStorage.setItem("bx_user_id", storedUserId);
+          if (!storedMac || !storedUserId) {
+            storedMac = generateMacAddress();
+            storedUserId = generateUserId();
+            localStorage.setItem("bx_mac_address", storedMac);
+            localStorage.setItem("bx_user_id", storedUserId);
+          }
+
+          setAuthState({
+            macAddress: storedMac,
+            userId: storedUserId,
+            isLoaded: true,
+          });
+        }
       }
-
-      setAuthState({
-        macAddress: storedMac,
-        userId: storedUserId,
-        isLoaded: true,
-      });
-    }
+    };
+    initAuth();
   }, []);
 
   return authState;

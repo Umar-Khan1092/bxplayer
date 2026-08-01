@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { InstallPWA } from "@/components/pwa/InstallPWA";
+import { CapacitorApp } from "@/components/pwa/CapacitorApp";
+import { SpatialNavigationInit } from "@/components/pwa/SpatialNavigationInit";
 import "./globals.css";
 
 const inter = Inter({
@@ -69,6 +71,8 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         {children}
         <InstallPWA />
+        <CapacitorApp />
+        <SpatialNavigationInit />
       </body>
     </html>
   );
