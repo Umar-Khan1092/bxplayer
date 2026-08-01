@@ -9,6 +9,10 @@ const config: CapacitorConfig = {
       enabled: true,
     },
   },
+  server: {
+    url: 'http://192.168.100.11:3000',
+    cleartext: true
+  }
 };
 
 export default config;
