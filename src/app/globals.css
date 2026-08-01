@@ -25,6 +25,19 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+  /* Native App Feel: Prevent text selection and long-press popup menus */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Prevent browser "bounce" effect when scrolling past the top/bottom */
+  overscroll-behavior-y: none;
+}
+
+/* Allow text selection inside input fields so users can copy/paste */
+input, textarea {
+  -webkit-user-select: auto;
+  user-select: auto;
 }
 
 /* Utilities for glassmorphism */

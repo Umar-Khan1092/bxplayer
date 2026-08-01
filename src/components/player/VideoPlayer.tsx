@@ -5,6 +5,10 @@ import { Play, Pause, Maximize, Volume2, VolumeX, RotateCcw, RotateCw, Heart, Lo
 import { cn } from '@/lib/utils';
 import Hls from 'hls.js';
 import { Capacitor } from '@capacitor/core';
+import { App as CapacitorAppNative } from '@capacitor/app';
+import { KeepAwake } from '@capacitor-community/keep-awake';
+import { ScreenOrientation } from '@capacitor/screen-orientation';
+import { StatusBar } from '@capacitor/status-bar';
 
 interface VideoPlayerProps {
   src: string;
@@ -49,6 +53,9 @@ export function VideoPlayer({ src, poster, title, isFavorite, onFavoriteToggle, 
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
+  const showControlsRef = useRef(showControls);
+  useEffect(() => { showControlsRef.current = showControls; }, [showControls]);
+
   // ─── Controls visibility ──────────────────────────────────────────────────
   const showControlsTemporarily = useCallback(() => {
     setShowControls(true);
@@ -58,12 +65,37 @@ export function VideoPlayer({ src, poster, title, isFavorite, onFavoriteToggle, 
       if (videoRef.current && !videoRef.current.paused) {
         setShowControls(false);
       }
-    }, 4000);
+    }, 2000);
   }, []);
 
   useEffect(() => {
     return () => {
       if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
+    };
+  }, []);
+
+  // ─── Native Hardware Hooks (KeepAwake & Background Pause) ─────────────────
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+
+    if (isPlaying) {
+      KeepAwake.keepAwake().catch((err) => console.warn("KeepAwake err:", err));
+    } else {
+      KeepAwake.allowSleep().catch((err) => console.warn("AllowSleep err:", err));
+    }
+  }, [isPlaying]);
+
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+    
+    const listener = CapacitorAppNative.addListener('appStateChange', ({ isActive }) => {
+      if (!isActive && videoRef.current && !videoRef.current.paused) {
+        videoRef.current.pause();
+      }
+    });
+
+    return () => {
+      listener.then(l => l.remove());
     };
   }, []);
 
@@ -319,7 +351,18 @@ export function VideoPlayer({ src, poster, title, isFavorite, onFavoriteToggle, 
     } else {
       video.pause();
     }
-    // Note: isPlaying state is updated by the native play/pause event listeners above
+  };
+
+  const handleVideoTap = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!showControlsRef.current) {
+      // Controls are hidden: Tap only reveals controls (does NOT pause video)
+      showControlsTemporarily();
+    } else {
+      // Controls are visible: Tap toggles play/pause and resets the hide timer
+      togglePlay();
+      showControlsTemporarily();
+    }
   };
 
   const skipForward = (e: React.MouseEvent) => {
@@ -361,18 +404,34 @@ export function VideoPlayer({ src, poster, title, isFavorite, onFavoriteToggle, 
     if (document.fullscreenElement || (document as any).webkitFullscreenElement) {
       if (document.exitFullscreen) document.exitFullscreen();
       else if ((document as any).webkitExitFullscreen) (document as any).webkitExitFullscreen();
+      
       try {
-        const o = screen.orientation as any;
-        if (o?.unlock) o.unlock();
-      } catch (_) {}
+        if (Capacitor.isNativePlatform()) {
+          await ScreenOrientation.unlock();
+          await StatusBar.show();
+        } else {
+          const o = screen.orientation as any;
+          if (o?.unlock) o.unlock();
+        }
+      } catch (err) {
+        console.warn("Fullscreen exit err:", err);
+      }
     } else {
       try {
         if (container.requestFullscreen)       await container.requestFullscreen();
         else if (container.webkitRequestFullscreen) await container.webkitRequestFullscreen();
         else if (video?.webkitEnterFullscreen)  video.webkitEnterFullscreen();
-        const o = screen.orientation as any;
-        if (o?.lock) await o.lock('landscape');
-      } catch (_) {}
+        
+        if (Capacitor.isNativePlatform()) {
+          await ScreenOrientation.lock({ orientation: 'landscape' });
+          await StatusBar.hide();
+        } else {
+          const o = screen.orientation as any;
+          if (o?.lock) await o.lock('landscape');
+        }
+      } catch (err) {
+        console.warn("Fullscreen enter err:", err);
+      }
     }
   };
 
@@ -399,7 +458,6 @@ export function VideoPlayer({ src, poster, title, isFavorite, onFavoriteToggle, 
       ref={containerRef}
       className="bxp-player relative w-full rounded-xl sm:rounded-2xl overflow-hidden bg-black border border-[rgba(255,255,255,0.1)]"
       onMouseMove={showControlsTemporarily}
-      onTouchStart={showControlsTemporarily}
       onMouseLeave={() => { if (isPlaying) setShowControls(false); }}
       onFocus={showControlsTemporarily}  /* TV D-pad navigation */
     >
@@ -410,7 +468,7 @@ export function VideoPlayer({ src, poster, title, isFavorite, onFavoriteToggle, 
         autoPlay
         preload="auto"
         className="w-full h-full aspect-video object-contain"
-        onClick={togglePlay}
+        onClick={handleVideoTap}
       />
 
       {/* Buffering Spinner */}
