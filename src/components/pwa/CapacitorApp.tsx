@@ -19,11 +19,17 @@ export function CapacitorApp() {
           return;
         }
         
-        // Otherwise handle normal navigation
-        if (pathname === '/') {
-          App.exitApp();
-        } else {
-          router.back();
+        // Otherwise dispatch custom event for React components to handle
+        const event = new CustomEvent('appBackButton');
+        const cancelled = !window.dispatchEvent(event);
+        
+        if (!cancelled) {
+          // If no component prevented default, handle default navigation
+          if (pathname === '/') {
+            App.exitApp();
+          } else {
+            router.back();
+          }
         }
       });
       

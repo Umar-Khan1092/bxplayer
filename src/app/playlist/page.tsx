@@ -57,7 +57,9 @@ export default function PlaylistPage() {
     setIsLoading(true);
     try {
       const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://bxplayer.vercel.app';
-      const res = await fetch(`${baseUrl}/api/playlists?macAddress=${activeMac || persistentMac}`);
+      const res = await fetch(`${baseUrl}/api/playlists?macAddress=${activeMac || persistentMac}&t=${Date.now()}`, {
+        cache: 'no-store'
+      });
       if (res.ok) {
         const data = await res.json();
         setPlaylists(data);
