@@ -10,6 +10,7 @@ import { Plus, ListVideo, Key, Link as LinkIcon, Trash2, Lock, Monitor, ArrowRig
 import type { PlaylistRecord } from "@/lib/db";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
+import { Capacitor } from '@capacitor/core';
 
 export default function PlaylistPage() {
   const { macAddress: persistentMac, userId: persistentId, isLoaded: isAuthLoaded } = useAuth();
@@ -22,6 +23,7 @@ export default function PlaylistPage() {
   const [macInput, setMacInput] = useState("");
   const [userIdInput, setUserIdInput] = useState("");
   const [authError, setAuthError] = useState("");
+  const [activeMac, setActiveMac] = useState("");
 
   // Data State
   const [playlists, setPlaylists] = useState<PlaylistRecord[]>([]);
@@ -54,8 +56,8 @@ export default function PlaylistPage() {
   const fetchPlaylists = async () => {
     setIsLoading(true);
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
-      const res = await fetch(`${baseUrl}/api/playlists?macAddress=${persistentMac}`);
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://bxplayer.vercel.app';
+      const res = await fetch(`${baseUrl}/api/playlists?macAddress=${activeMac || persistentMac}`);
       if (res.ok) {
         const data = await res.json();
         setPlaylists(data);
@@ -68,22 +70,38 @@ export default function PlaylistPage() {
   };
 
   useEffect(() => {
-    if (isAuthenticated && persistentMac) {
+    if (isAuthenticated && (activeMac || persistentMac)) {
       fetchPlaylists();
     }
-  }, [isAuthenticated, persistentMac]);
+  }, [isAuthenticated, activeMac, persistentMac]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     const cleanMac = macInput.trim().toUpperCase().replace(/\s/g, '');
     const cleanId = userIdInput.trim().replace(/\s/g, '');
-    const cleanPersistentMac = persistentMac?.trim().toUpperCase().replace(/\s/g, '');
-    const cleanPersistentId = persistentId?.trim().replace(/\s/g, '');
-    if (cleanMac === cleanPersistentMac && cleanId === cleanPersistentId) {
-      setIsAuthenticated(true);
-      setAuthError("");
+    
+    // If not native, allow any valid-looking MAC/ID for remote web management
+    const isNative = typeof window !== 'undefined' && Capacitor.isNativePlatform();
+    
+    if (isNative) {
+      const cleanPersistentMac = persistentMac?.trim().toUpperCase().replace(/\s/g, '');
+      const cleanPersistentId = persistentId?.trim().replace(/\s/g, '');
+      if (cleanMac === cleanPersistentMac && cleanId === cleanPersistentId) {
+        setActiveMac(cleanMac);
+        setIsAuthenticated(true);
+        setAuthError("");
+      } else {
+        setAuthError("Invalid Mac Address or User ID for this device");
+      }
     } else {
-      setAuthError("Invalid Mac Address or User ID");
+      // Allow any MAC and ID for remote web login
+      if (cleanMac.length > 5 && cleanId.length > 3) {
+        setActiveMac(cleanMac);
+        setIsAuthenticated(true);
+        setAuthError("");
+      } else {
+        setAuthError("Please enter a valid MAC Address and User ID");
+      }
     }
   };
 
@@ -155,8 +173,8 @@ export default function PlaylistPage() {
 
     if (!confirm("Are you sure you want to delete this playlist?")) return;
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
-      const res = await fetch(`${baseUrl}/api/playlists?id=${id}&macAddress=${persistentMac}`, {
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://bxplayer.vercel.app';
+      const res = await fetch(`${baseUrl}/api/playlists?id=${id}&macAddress=${activeMac || persistentMac}`, {
         method: 'DELETE'
       });
       if (res.ok) {
@@ -186,7 +204,7 @@ export default function PlaylistPage() {
     
     let playlistData: Partial<PlaylistRecord> = {
       name: playlistName,
-      macAddress: persistentMac,
+      macAddress: activeMac || persistentMac,
       type: activeFormTab === "M3U" ? "M3U" : activeFormTab === "XTREAM" ? "XTREAM" : "CODE",
       isLocked: isProtected,
       pin: isProtected ? pin : undefined
@@ -205,7 +223,7 @@ export default function PlaylistPage() {
 
     try {
       const method = editingId ? 'PUT' : 'POST';
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://bxplayer.vercel.app';
       const url = `${baseUrl}/api/playlists`;
       const body = editingId ? { ...playlistData, id: editingId } : playlistData;
 
@@ -832,7 +850,7 @@ export default function PlaylistPage() {
                     <div>
                       <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">MAC Address</h4>
                       <p className="text-lg font-mono font-bold text-gray-900 bg-gray-50 border border-gray-100 px-4 py-2 rounded-md inline-block">
-                        {persistentMac}
+                        {activeMac || persistentMac}
                       </p>
                     </div>
                     <div>

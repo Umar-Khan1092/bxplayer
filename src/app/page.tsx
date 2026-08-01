@@ -45,7 +45,7 @@ export default function Home() {
 
   const fetchMedia = async () => {
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://bxplayer.vercel.app';
       const res = await fetch(`${baseUrl}/api/media`);
       const data = await res.json();
       setMediaList(data);
@@ -63,7 +63,7 @@ export default function Home() {
     if (!persistentMac) return;
     setIsPlaylistsLoading(true);
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://bxplayer.vercel.app';
       const res = await fetch(`${baseUrl}/api/playlists?macAddress=${persistentMac}`);
       const data = await res.json();
       setCustomPlaylists(data);
@@ -83,7 +83,7 @@ export default function Home() {
     setActiveTab("Home"); // Switch immediately to show the loading skeleton
     window.scrollTo(0, 0); // Scroll to top to ensure skeleton is visible
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://bxplayer.vercel.app';
       const res = await fetch(`${baseUrl}/api/media?playlistId=${playlist.id}`);
       if (res.ok) {
         const data = await res.json();

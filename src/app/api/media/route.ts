@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { getMedia, savePlaylists, getPlaylists } from '@/lib/db';
 import { parseM3U, fetchXtream } from '@/lib/iptv';
 
+export const dynamic = "force-static";
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
