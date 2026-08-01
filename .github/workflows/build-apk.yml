@@ -30,6 +30,9 @@ jobs:
       - name: Build Next.js Static Export
         run: npm run build:cap
 
+      - name: Prevent APK inception (Remove APK from assets before sync)
+        run: rm -f out/*.apk
+
       - name: Restore API routes
         run: mv src/app/_api_temp src/app/api
 
