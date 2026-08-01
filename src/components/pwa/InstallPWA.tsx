@@ -2,104 +2,118 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { X, Download, Share } from "lucide-react";
+import { X, Download, Share, Smartphone } from "lucide-react";
+import { Capacitor } from '@capacitor/core';
 
 export function InstallPWA() {
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isAndroid, setIsAndroid] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
-  const [showInstallBanner, setShowInstallBanner] = useState(false);
+  const [showPrompt, setShowPrompt] = useState(false);
   const [showIOSInstructions, setShowIOSInstructions] = useState(false);
 
   useEffect(() => {
-    // Register Service Worker
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(err => console.error("SW Registration Failed:", err));
-    }
-
-    // Detect iOS
-    const userAgent = window.navigator.userAgent.toLowerCase();
-    const isIosDevice = /iphone|ipad|ipod/.test(userAgent);
-    setIsIOS(isIosDevice);
-
-    // If it's iOS and not already in standalone mode, show banner
-    if (isIosDevice && !window.matchMedia("(display-mode: standalone)").matches) {
-      setShowInstallBanner(true);
-    }
-
-    const handler = (e: Event) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-      setShowInstallBanner(true);
-    };
-
-    window.addEventListener("beforeinstallprompt", handler);
-
-    return () => {
-      window.removeEventListener("beforeinstallprompt", handler);
-    };
-  }, []);
-
-  const handleInstallClick = async () => {
-    if (isIOS) {
-      setShowIOSInstructions(true);
+    // If running natively inside Capacitor, NEVER show this prompt.
+    if (typeof window !== 'undefined' && Capacitor.isNativePlatform()) {
       return;
     }
 
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === "accepted") {
-        setDeferredPrompt(null);
-        setShowInstallBanner(false);
-      }
+    // Check if user has already dismissed the prompt in this session/device
+    const hasDismissed = localStorage.getItem('bxplayer_app_prompt_dismissed');
+    
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    const android = /android/.test(userAgent);
+    const ios = /iphone|ipad|ipod/.test(userAgent);
+    
+    setIsAndroid(android);
+    setIsIOS(ios);
+    setIsMobile(android || ios);
+
+    // If it's a mobile web browser and they haven't dismissed it, show the prompt!
+    if ((android || ios) && !hasDismissed && !window.matchMedia("(display-mode: standalone)").matches) {
+      setShowPrompt(true);
     }
+  }, []);
+
+  const handleDismiss = () => {
+    localStorage.setItem('bxplayer_app_prompt_dismissed', 'true');
+    setShowPrompt(false);
   };
 
-  if (!showInstallBanner) return null;
+  const handleDownloadAPK = () => {
+    // Start the download
+    window.location.href = '/app-release.apk';
+    // After they click download, we can let them proceed
+    handleDismiss();
+  };
+
+  const handleIOSInstall = () => {
+    setShowIOSInstructions(true);
+    setShowPrompt(false);
+  };
+
+  if (!showPrompt && !showIOSInstructions) return null;
 
   return (
     <>
-      <div className="fixed bottom-6 right-6 z-50 animate-in fade-in slide-in-from-bottom-4 duration-500">
-        <div className="bg-zinc-900/90 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-2xl flex items-center gap-4 group hover:bg-zinc-800/90 transition-colors">
-          <button onClick={() => setShowInstallBanner(false)} className="absolute -top-2 -right-2 bg-zinc-800 text-zinc-400 hover:text-white p-1 rounded-full border border-white/10">
-            <X className="w-4 h-4" />
-          </button>
-          
-          <div className="w-12 h-12 relative rounded-xl overflow-hidden shadow-inner flex-shrink-0">
-            <Image src="/logo.png" alt="BxPlayer" fill sizes="48px" className="object-cover" />
-          </div>
-          
-          <div className="flex flex-col pr-4">
-            <span className="text-white font-bold text-sm">BxPlayer</span>
-            <span className="text-zinc-400 text-xs mb-2">Install App</span>
+      {/* Main Mobile App Prompt Overlay */}
+      {showPrompt && (
+        <div className="fixed inset-0 z-[100] bg-[#050505]/95 backdrop-blur-md flex flex-col items-center justify-center p-6 animate-in fade-in duration-300">
+          <div className="flex flex-col items-center text-center max-w-sm w-full">
+            <div className="w-32 h-32 relative rounded-3xl overflow-hidden mb-8 shadow-[0_0_40px_rgba(220,38,38,0.3)] border border-white/10">
+              <Image src="/logo.png" alt="BX Player" fill sizes="128px" className="object-cover" />
+            </div>
+            
+            <h2 className="text-3xl font-bold text-white mb-3">BX Player</h2>
+            <p className="text-gray-400 text-sm mb-10 leading-relaxed">
+              For the ultimate ad-free experience, zero buffering, and native performance, install our official mobile app!
+            </p>
+
+            {isAndroid ? (
+              <button 
+                onClick={handleDownloadAPK}
+                className="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-3 transition-transform active:scale-95 shadow-lg shadow-red-900/50 mb-4"
+              >
+                <Download className="w-5 h-5" />
+                Install App (APK)
+              </button>
+            ) : isIOS ? (
+              <button 
+                onClick={handleIOSInstall}
+                className="w-full bg-white text-black font-bold py-4 rounded-2xl flex items-center justify-center gap-3 transition-transform active:scale-95 shadow-lg mb-4"
+              >
+                <Smartphone className="w-5 h-5" />
+                Install iOS App
+              </button>
+            ) : null}
+
             <button 
-              onClick={handleInstallClick}
-              className="bg-red-600 hover:bg-red-500 text-white text-xs font-bold py-1.5 px-4 rounded-full flex items-center gap-1.5 transition-colors"
+              onClick={handleDismiss}
+              className="text-gray-500 font-medium text-sm py-3 px-6 hover:text-white transition-colors mt-2"
             >
-              <Download className="w-3 h-3" />
-              Install
+              Continue to Web Version
             </button>
           </div>
         </div>
-      </div>
+      )}
 
       {/* iOS Instructions Modal */}
       {showIOSInstructions && (
-        <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-white/10 rounded-3xl p-6 max-w-sm w-full text-center relative">
+        <div className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md flex items-center justify-center p-6 animate-in zoom-in duration-300">
+          <div className="bg-zinc-900 border border-white/10 rounded-3xl p-6 max-w-sm w-full text-center relative shadow-2xl">
             <button 
               onClick={() => setShowIOSInstructions(false)} 
-              className="absolute top-4 right-4 text-zinc-400 hover:text-white"
+              className="absolute top-4 right-4 text-zinc-400 hover:text-white bg-black/50 p-2 rounded-full"
             >
-              <X className="w-6 h-6" />
+              <X className="w-5 h-5" />
             </button>
             <div className="w-20 h-20 relative rounded-2xl overflow-hidden mx-auto mb-6 shadow-xl border border-white/10">
-              <Image src="/logo.png" alt="BxPlayer" fill sizes="80px" className="object-cover" />
+              <Image src="/logo.png" alt="BX Player" fill sizes="80px" className="object-cover" />
             </div>
-            <h3 className="text-xl font-bold text-white mb-2">Install BxPlayer</h3>
+            <h3 className="text-xl font-bold text-white mb-2">Install BX Player</h3>
             <p className="text-zinc-400 mb-8 text-sm">Install this app on your iPhone for a full-screen native experience.</p>
             
-            <div className="bg-zinc-800/50 rounded-2xl p-4 mb-6">
+            <div className="bg-zinc-800/50 rounded-2xl p-4 mb-8">
               <div className="flex items-center gap-4 mb-4 text-left">
                 <div className="bg-blue-500/20 text-blue-500 p-2 rounded-xl flex-shrink-0">
                   <Share className="w-6 h-6" />
@@ -120,7 +134,7 @@ export function InstallPWA() {
             
             <button 
               onClick={() => setShowIOSInstructions(false)}
-              className="w-full bg-white text-black font-bold py-3 rounded-xl"
+              className="w-full bg-white hover:bg-gray-200 text-black font-bold py-3.5 rounded-xl transition-colors active:scale-95"
             >
               Got it
             </button>
